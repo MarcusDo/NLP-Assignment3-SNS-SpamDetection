@@ -1,5 +1,8 @@
 import os 
+import re
 import pandas as pd 
+import nltk
+from nltk.corpus import stopwords
 from sklearn.model_selection import train_test_split    
 
 # ---- Helper functions for data preprocessing -----
@@ -21,7 +24,33 @@ def label_encoding(df):
     df['label'] = df['label'].map({'ham': 0, 'spam': 1})
     return df
 
-# 
+# Text Cleaning Function 
+def text_cleaning(text):
+    text = text.lower()
+    text = re.sub('[^a-zA-Z]', ' ', text) 
+    text = text.split()
+    text = ' '.join(text)
+    return text
+
+# Text Tokenization function
+def text_tokenization(text):
+    return nltk.word_tokenize(text)
+
+# Text Stopword Removal function
+def stopword_removal(tokens):
+    stop_words = set(stopwords.words('english'))
+    cleaned_tokens = []
+    for token in tokens:
+        if token not in stop_words:
+            cleaned_tokens.append(token)
+    return cleaned_tokens
+
+def word_lemmatization(tokens):
+    lemmatizer = nltk.WordNetLemmatizer()
+    cleaned_tokens = []
+    for token in tokens:
+        cleaned_tokens.append(lemmatizer.lemmatize(token))
+    return cleaned_tokens
 
 # ----------------------------------------------
 
@@ -31,5 +60,6 @@ def data_preprocessing(df):
     df = label_encoding(df)
     # 2. Split the dataset 
     X_train, X_test, y_train, y_test = data_split(df)
+    # 3. Text cleaning and tokenization for training data
 
     return X_train, X_test, y_train, y_test
