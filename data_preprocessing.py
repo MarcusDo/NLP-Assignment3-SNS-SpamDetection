@@ -66,17 +66,23 @@ def data_preprocessing(df):
     # 1. Label encoding
     df = _label_encoding(df)
 
-    # 2. Split the dataset 
+    # 2. Duplicate removal
+    df = df.drop_duplicates()
+
+    # 3. Missing value removal
+    df = df.dropna()
+
+    # 4. Split the dataset 
     X_train, X_test, y_train, y_test = _data_split(df)
 
-    # 3. Train Data Preparation: 
+    # 5. Train Data Preparation: 
     X_train = X_train.apply(_text_cleaning)
     X_train = X_train.apply(_text_tokenization)
     X_train = X_train.apply(_stopword_removal)
     X_train = X_train.apply(_word_lemmatization)
     X_train = _word_vectorization(X_train)
 
-    # 5. Test Data Preparation:
+    # 6. Test Data Preparation:
     X_test = X_test.apply(_text_cleaning)
     X_test = X_test.apply(_text_tokenization)
     X_test = X_test.apply(_stopword_removal)
