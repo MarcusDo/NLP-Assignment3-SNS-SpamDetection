@@ -6,11 +6,6 @@ from sklearn.tree import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report, confusion_matrix, roc_curve, roc_auc_score, ConfusionMatrixDisplay
 
-mat = confusion_matrix (y_predict, y_valid)
-dis = ConfusionMatrixDisplay( confusion_matrix = mat)
-dis.plot()
-plt.tight_layout()
-plt.show()
 models = {
     'Logistic Regression': LogisticRegression(),
     'Multinomial Naive Bayes': MultinomialNB(),
