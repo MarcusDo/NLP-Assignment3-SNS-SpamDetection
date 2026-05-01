@@ -33,9 +33,13 @@ def _text_tokenization(text):
 def _tokens_lower(tokens):
     return [token.lower() for token in tokens]
 
-# Text Punctions Removal function
+# Text Punctuation Removal function
 def _tokens_punctuation_removal(tokens):
     return [re.sub(r'[^\w\s]', '', token) for token in tokens]
+
+# Text Number Handling function
+def _tokens_number_handling(tokens):
+    return [re.sub(r'\d+', 'number', token) for token in tokens]
 
 # Text Stopword Removal function
 def _tokens_stopword_removal(tokens):
@@ -78,6 +82,7 @@ def data_preprocessing(df):
     X_train = X_train.apply(_text_tokenization)
     X_train = X_train.apply(_tokens_lower)
     X_train = X_train.apply(_tokens_punctuation_removal)
+    X_train = X_train.apply(_tokens_number_handling)
     X_train = X_train.apply(_tokens_stopword_removal)
     X_train = X_train.apply(_tokens_lemmatization)
     X_train = _word_vectorization(X_train)
@@ -86,6 +91,7 @@ def data_preprocessing(df):
     X_test = X_test.apply(_text_tokenization)
     X_test = X_test.apply(_tokens_lower)
     X_test = X_test.apply(_tokens_punctuation_removal)
+    X_test = X_test.apply(_tokens_number_handling)
     X_test = X_test.apply(_tokens_stopword_removal)
     X_test = X_test.apply(_tokens_lemmatization)
     X_test = _word_vectorization(X_test)
