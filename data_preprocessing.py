@@ -26,26 +26,25 @@ def _label_encoding(df):
     df['label'] = df['label'].map({'ham': 0, 'spam': 1})
     return df
 
-# Text Cleaning Function 
-def _text_cleaning(text):
-    text = text.lower()
-    text = re.sub('[^a-zA-Z]', ' ', text) 
-    text = text.split()
-    text = ' '.join(text)
-    return text
-
-# Text Tokenization function
 def _text_tokenization(text):
     return nltk.word_tokenize(text)
 
+# Text Lowercasing Function
+def _tokens_lower(tokens):
+    return [token.lower() for token in tokens]
+
+# Text Punctions Removal function
+def _tokens_punctuation_removal(tokens):
+    return [re.sub(r'[^\w\s]', '', token) for token in tokens]
+
 # Text Stopword Removal function
-def _stopword_removal(tokens):
+def _tokens_stopword_removal(tokens):
     stop_words = set(stopwords.words('english'))
     cleaned_tokens = [token for token in tokens if token not in stop_words]
     return cleaned_tokens
 
 # Text Lemmatization function
-def _word_lemmatization(tokens):
+def _tokens_lemmatization(tokens):
     lemmatizer = nltk.WordNetLemmatizer()
     cleaned_tokens = []
     for token in tokens:
@@ -76,17 +75,19 @@ def data_preprocessing(df):
     X_train, X_test, y_train, y_test = _data_split(df)
 
     # 5. Train Data Preparation: 
-    X_train = X_train.apply(_text_cleaning)
     X_train = X_train.apply(_text_tokenization)
-    X_train = X_train.apply(_stopword_removal)
-    X_train = X_train.apply(_word_lemmatization)
+    X_train = X_train.apply(_tokens_lower)
+    X_train = X_train.apply(_tokens_punctuation_removal)
+    X_train = X_train.apply(_tokens_stopword_removal)
+    X_train = X_train.apply(_tokens_lemmatization)
     X_train = _word_vectorization(X_train)
 
     # 6. Test Data Preparation:
-    X_test = X_test.apply(_text_cleaning)
     X_test = X_test.apply(_text_tokenization)
-    X_test = X_test.apply(_stopword_removal)
-    X_test = X_test.apply(_word_lemmatization)
+    X_test = X_test.apply(_tokens_lower)
+    X_test = X_test.apply(_tokens_punctuation_removal)
+    X_test = X_test.apply(_tokens_stopword_removal)
+    X_test = X_test.apply(_tokens_lemmatization)
     X_test = _word_vectorization(X_test)
 
     return X_train, X_test, y_train, y_test
