@@ -9,7 +9,7 @@ from sklearn.metrics import classification_report, confusion_matrix, roc_curve, 
 models = {
     'Logistic Regression': LogisticRegression(),
     'Multinomial Naive Bayes': MultinomialNB(),
-    'Random Forest': RandomForestClassifier()
+    'Random Forest': RandomForestClassifier(),
 }
 
 def hyperparameter_tuning(model, paramaters, X_train, y_train, cv=5):
