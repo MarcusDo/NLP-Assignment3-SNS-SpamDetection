@@ -13,23 +13,31 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report, confusion_matrix, roc_curve, roc_auc_score, ConfusionMatrixDisplay
 
+
 class LSTM_model:
-    def __init__(self, input_dim= None, output_dim = 128, input_length= 100, lstm_units= 128, dropout_rate= 0.2):
+    def __init__(self, input_dim= None, output_dim = 45, input_length= 100, dropout_rate= 0.2):
         self.model = Sequential([
             Embedding(input_dim=input_dim, output_dim=output_dim, input_length=input_length),
-            LSTM(lstm_units, dropout=dropout_rate, recurrent_dropout=dropout_rate),
+            LSTM(64, input_shape=(input_length, output_dim), activation='relu', return_sequences=True),
+            Dropout(dropout_rate),
+            LSTM(64, activation='relu'),
+            Dropout(dropout_rate),
+            Dense(32, activation='relu'),
+            Dropout(dropout_rate),
             Dense(1, activation='sigmoid')
         ])
     
-    def _compile(self, learning_rate=0.001):
-        self.model.compile(loss= BinaryCrossentropy(), optimizer=Adam(learning_rate=learning_rate), metrics=['auc'])
+    def _compile(self, lr =0.01):
+        self.model.compile(loss = BinaryCrossentropy(), optimizer =Adam(learning_rate=lr), metrics=['auc'])
         return self.model
 
-    def _predict(self, X):
-        return np.argmax(self.model.predict(X), axis=-1)
-
     def _predict_proba(self, X):
-        return self.model.predict(X)
+        proba = self.model.predict(X)
+        return proba.flatten()
+    
+    def _predict(self, X):
+        return (self._predict_proba(X) >= 0.5).astype(int).flatten()
+
     
 class LogisticRegression_model:
     def __init__(self):
