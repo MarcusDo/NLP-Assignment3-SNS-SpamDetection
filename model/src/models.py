@@ -1,18 +1,16 @@
 # Import Necessary libraries
 import matplotlib.pyplot as plt
 import numpy as np
-import tensorflow as tf
-from tf.keras.models import Sequential
-from tf.keras.layers import Embedding, LSTM, Dense, Dropout
-from tf.keras.losses import BinaryCrossentropy
-from tf.keras.optimizers import Adam
+from tensor.keras.models import Sequential
+from tensor.keras.layers import Embedding, LSTM, Dense, Dropout
+from tensor.keras.losses import BinaryCrossentropy
+from tensor.keras.optimizers import Adam
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report, confusion_matrix, roc_curve, roc_auc_score, ConfusionMatrixDisplay
-
 
 class LSTM_model:
     def __init__(self, input_dim= None, output_dim = 45, input_length= 100, dropout_rate= 0.2):
