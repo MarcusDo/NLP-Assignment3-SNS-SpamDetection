@@ -78,7 +78,7 @@ class LogisticRegression_model (BaseEstimator, ClassifierMixin):
     
     def fit(self, X_train, y_train):
         self.model.fit(X_train, y_train)
-        return self.model
+        return self
     
     def predict(self, X):
         return self.model.predict(X)
@@ -98,7 +98,7 @@ class MultinomialNB_model (BaseEstimator, ClassifierMixin):
     
     def fit(self, X_train, y_train):
         self.model.fit(X_train, y_train)
-        return self.model
+        return self
     
     def predict(self, X):
         return self.model.predict(X)
