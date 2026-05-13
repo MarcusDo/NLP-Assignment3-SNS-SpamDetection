@@ -29,6 +29,10 @@ def _label_encoding(df):
 def _text_tokenization(text):
     return nltk.word_tokenize(text)
 
+# Remove Blank
+def _tokens_blank_removal(tokens):
+    return [token for token in tokens if token != '']
+
 # Text Lowercasing Function
 def _tokens_lower(tokens):
     return [token.lower() for token in tokens]
@@ -78,6 +82,7 @@ def data_preprocessing(df):
     X_train = X_train.apply(_tokens_number_handling)
     X_train = X_train.apply(_tokens_stopword_removal)
     X_train = X_train.apply(_tokens_lemmatization)
+    X_train = X_train.apply(_tokens_blank_removal)
 
     # 6. Test Data Preparation:
     X_test = X_test.apply(_text_tokenization)
@@ -86,5 +91,6 @@ def data_preprocessing(df):
     X_test = X_test.apply(_tokens_number_handling)
     X_test = X_test.apply(_tokens_stopword_removal)
     X_test = X_test.apply(_tokens_lemmatization)
+    X_test = X_test.apply(_tokens_blank_removal)
 
     return X_train, X_test, y_train, y_test
