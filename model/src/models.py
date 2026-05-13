@@ -51,9 +51,22 @@ class LSTM_model:
         self.model.compile(loss = BinaryCrossentropy(), optimizer =Adam(learning_rate=self.lr), metrics=[AUC(name='auc')])
         return self.model
     
-    def fit(self, X_train, y_train):
+    def fit(self, X_train, y_train, X_val=None, y_val=None):
         tf.random.set_seed(self.random_state)
-        self.history = self.model.fit(X_train, y_train, epochs=self.epochs, batch_size=self.batch_size, verbose=1) 
+
+        validation_data = None
+        if X_val is not None and y_val is not None:
+            validation_data = (X_val, y_val)
+            
+        self.history = self.model.fit(
+            X_train,
+            y_train,
+            validation_data=validation_data,
+            epochs=self.epochs,
+            batch_size=self.batch_size,
+            verbose=1
+        )
+        return self
 
     def predict_proba(self, X):
         proba = self.model.predict(X).flatten()
