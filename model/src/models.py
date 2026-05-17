@@ -31,7 +31,7 @@ class LSTM_model:
     def _build_model(self):
         layers = [
             Input(shape = (self.input_length,)),
-            Embedding(input_dim=self.input_dim, output_dim=self.output_dim, input_length=self.input_length),
+            Embedding(input_dim=self.input_dim, output_dim=self.output_dim, input_length=self.input_length, mask_zero=True),
         ]
         for i, units in enumerate(self.lstm_units):
             return_sequences = i < len(self.lstm_units) - 1
@@ -48,7 +48,7 @@ class LSTM_model:
         return self.model
 
     def compile(self):
-        self.model.compile(loss=BinaryCrossentropy(), optimizer=Adam(learning_rate=self.lr))
+        self.model.compile(loss=BinaryCrossentropy(), optimizer=Adam(learning_rate=self.lr),  metrics=["AUC"])
         return self.model
     
     def fit(self, X_train, y_train, X_val=None, y_val=None):
