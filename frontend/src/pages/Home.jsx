@@ -1,30 +1,46 @@
-import { useState } from "react";
-import MessageInput from "../components/MessageInput";
-import ResultCard from "../components/ResultCard";
-import { predictSpam } from "../services/api";
+import { Link } from "react-router-dom";
 
 export default function Home() {
-  const [result, setResult] = useState(null);
-
-  const handleSubmit = async (text) => {
-    try {
-      const res = await predictSpam(text);
-      setResult(res.data);
-    } catch (err) {
-      console.error(err);
-      alert("Error calling API");
-    }
-  };
-
   return (
-    <div className="container">
-     <h1>📩 SMS Spam Detector</h1>
-    <p className="subtitle">
-     Enter an SMS message and let the machine learning model classify it as spam or ham.
-    </p>
-    
-      <MessageInput onSubmit={handleSubmit} />
-      <ResultCard result={result} />
-    </div>
+    <main>
+      <section className="hero">
+        <div className="hero-overlay">
+          <h1>Detect Spam Before It Tricks You</h1>
+          <p>
+            AI-powered SMS spam detection using Natural Language Processing and
+            machine learning models.
+          </p>
+
+          <div className="hero-buttons">
+            <Link to="/feature" className="btn primary">
+              Try Detector
+            </Link>
+            <Link to="/about" className="btn secondary">
+              Learn More
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="features-preview">
+        <div className="feature-card">
+          <div className="feature-icon">🔍</div>
+          <h3>SMS Analysis</h3>
+          <p>Analyse message text and identify spam patterns instantly.</p>
+        </div>
+
+        <div className="feature-card">
+          <div className="feature-icon">⚠️</div>
+          <h3>Spam Risk Alert</h3>
+          <p>Show whether a message is safe, suspicious, or high risk.</p>
+        </div>
+
+        <div className="feature-card">
+          <div className="feature-icon">📊</div>
+          <h3>Model Comparison</h3>
+          <p>Compare Naive Bayes, Logistic Regression, and LSTM results.</p>
+        </div>
+      </section>
+    </main>
   );
 }
