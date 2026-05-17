@@ -1,10 +1,10 @@
 # Import Necessary libraries
 import numpy as np
 from sklearn.base import BaseEstimator, ClassifierMixin
+from sklearn.metrics import roc_auc_score
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, LSTM, Dense, Dropout, Input
-from tensorflow.keras.metrics import AUC
+from tensorflow.keras.layers import Embedding, LSTM, Dense, Dropout, Input, InputLayer
 from tensorflow.keras.losses import BinaryCrossentropy
 from tensorflow.keras.optimizers import Adam
 from sklearn.pipeline import Pipeline
@@ -30,7 +30,7 @@ class LSTM_model:
 
     def _build_model(self):
         layers = [
-            Input(shape=(self.input_length,)),
+            Input(shape = (self.input_length,)),
             Embedding(input_dim=self.input_dim, output_dim=self.output_dim, input_length=self.input_length),
         ]
         for i, units in enumerate(self.lstm_units):
@@ -48,7 +48,7 @@ class LSTM_model:
         return self.model
 
     def compile(self):
-        self.model.compile(loss = BinaryCrossentropy(), optimizer =Adam(learning_rate=self.lr), metrics=[AUC(name='auc')])
+        self.model.compile(loss=BinaryCrossentropy(), optimizer=Adam(learning_rate=self.lr))
         return self.model
     
     def fit(self, X_train, y_train, X_val=None, y_val=None):
@@ -64,7 +64,7 @@ class LSTM_model:
             validation_data=validation_data,
             epochs=self.epochs,
             batch_size=self.batch_size,
-            verbose=1
+            verbose=0
         )
         return self
 
